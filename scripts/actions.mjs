@@ -2,7 +2,12 @@
  * Refresh entry point for GitHub Actions.
  * Scrapes all venues, adds ratings, and writes data/listings.json for the page.
  */
+import dns from "node:dns";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+
+// GitHub runners advertise IPv6 but cannot always reach these hosts over it,
+// which surfaces as an unexplained "fetch failed".
+dns.setDefaultResultOrder("ipv4first");
 import { buildListings } from "../lib/build.mjs";
 
 const CACHE_FILE = "data/ratings-cache.json";
