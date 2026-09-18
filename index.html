@@ -147,7 +147,7 @@
     <label class="sort">Sort
       <select id="sort">
         <option value="time">By time</option>
-        <option value="rating">By IMDb rating</option>
+        <option value="rating">By rating</option>
       </select>
     </label>
   </div>
@@ -286,7 +286,8 @@
     if (isToday && !state.showPast) rows = rows.filter(({ s }) => minutes(s.time) >= minutes(now.time) - 15);
     if (state.oldOnly) rows = rows.filter(({ s, f }) => (f.year && thisYear - f.year >= 10) || (s.year && thisYear - s.year >= 10));
     if (state.sort === "rating") {
-      rows.sort((a, b) => (b.f.imdbRating ?? -1) - (a.f.imdbRating ?? -1) || a.s.time.localeCompare(b.s.time));
+      const rating = ({ f }) => f.imdbRating ?? f.tmdbRating ?? -1;
+      rows.sort((a, b) => rating(b) - rating(a) || a.s.time.localeCompare(b.s.time));
     }
 
     const list = $("list");
@@ -312,7 +313,10 @@
             scoreBox("IMDb", f.imdbRating, "", "imdb", imdbUrl),
             scoreBox("Tomatometer", f.rottenTomatoes, "%", "rt"),
             scoreBox("Metacritic", f.metacritic, "", "mc"))
-        : el("div", { class: "unrated", text: "No ratings found" });
+        // TMDB stands in when OMDb gave us nothing, so a film still shows a score.
+        : f.tmdbRating != null
+          ? el("div", { class: "scores" }, scoreBox("TMDB", f.tmdbRating, "", "imdb", imdbUrl))
+          : el("div", { class: "unrated", text: "No ratings found" });
 
       const links = el("div", { class: "links" },
         s.ticketUrl ? el("a", { href: s.ticketUrl, target: "_blank", rel: "noopener", text: "Tickets" }) : null,
