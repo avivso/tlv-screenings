@@ -1,0 +1,14 @@
+{
+  "name": "tlv-screenings",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=20.6" },
+  "scripts": {
+    "refresh": "node scripts/actions.mjs",
+    "refresh:local": "node --env-file=.env scripts/actions.mjs",
+    "preview": "npx serve ."
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0"
+  }
+}
