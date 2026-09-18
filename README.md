@@ -59,7 +59,30 @@ npm run preview         # serves the real data/listings.json
 
 From a normal Israeli connection all three venues scrape, including Movieland.
 
+## What gets listed
+
+The day strip covers the next 7 days. **Movieland is a commercial multiplex**, so
+it is filtered to its repertory programme only: films at least `MIN_AGE` (3) years
+old, judged on the year the ratings lookup resolved, because the venue rarely
+states one. Without that filter it drowns the page in current releases.
+
+Movieland and Jaffa both publish further ahead than a week — Movieland's schedule
+runs months out, and its classics are usually in those sparse later dates. Those
+screenings are collected too and shown under **Coming up later**, restricted to
+films at least 3 years old, since that is what is worth planning around.
+
 ## Ratings
+
+Three sources, and only one of them needs a key to be useful:
+
+- **TMDB** (`TMDB_API_KEY`) identifies the film from its Hebrew title and supplies
+  the English title, year, poster and a fallback score. This is the one that matters.
+- **IMDb** needs no key at all: `lib/imdb.mjs` streams IMDb's own daily ratings
+  dump (`datasets.imdbws.com`) and picks out the ids we care about, so IMDb scores
+  and vote counts work even with no OMDb key. Free for personal, non-commercial use.
+- **OMDb** (`OMDB_API_KEY`) is now only needed for Rotten Tomatoes and Metacritic.
+  If its key is missing or rejected, everything else still works and the page says
+  which scores are missing.
 
 `TMDB_API_KEY` and `OMDB_API_KEY` are repository secrets (Settings -> Secrets and
 variables -> Actions). Without them the scrape still runs and the page says the
