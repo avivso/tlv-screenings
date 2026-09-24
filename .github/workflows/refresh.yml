@@ -18,6 +18,9 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - uses: actions/checkout@v4
 
@@ -52,6 +55,14 @@ jobs:
 
       - name: Build site folder
         run: mkdir -p _site && cp index.html _site/ && cp -r data _site/ && rm -f _site/data/ratings-cache.json
+
+      # The page is served by Cloudflare Pages at https://tlvf.pages.dev.
+      # Does nothing until the two Cloudflare secrets exist.
+      - name: Publish to Cloudflare Pages
+        if: env.CLOUDFLARE_API_TOKEN != ''
+        run: |
+          npx --yes wrangler@3 pages project create tlvf --production-branch=main 2>/dev/null || true
+          npx --yes wrangler@3 pages deploy _site --project-name=tlvf --branch=main --commit-dirty=true
 
       - uses: actions/upload-pages-artifact@v3
         with:
