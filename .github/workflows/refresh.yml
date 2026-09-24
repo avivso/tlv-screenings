@@ -18,9 +18,6 @@ jobs:
   refresh:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    env:
-      SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-      SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
     steps:
       - uses: actions/checkout@v4
 
@@ -55,12 +52,6 @@ jobs:
 
       - name: Build site folder
         run: mkdir -p _site && cp index.html _site/ && cp -r data _site/ && rm -f _site/data/ratings-cache.json
-
-      # The page is served by Surge at https://tv.surge.sh.
-      # Does nothing until the two Surge secrets exist.
-      - name: Publish to Surge
-        if: env.SURGE_TOKEN != ''
-        run: npx --yes surge@0.24 _site tv.surge.sh
 
       - uses: actions/upload-pages-artifact@v3
         with:
