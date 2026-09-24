@@ -4,7 +4,7 @@ The next 7 days of screenings at the **Tel Aviv Cinematheque**, **Movieland HaTz
 **Jaffa Cinema**, the **Atlas Rooftop Cinema**, **Cinema Migdalor** and **Cinema
 HaPisga**, with IMDb scores.
 
-- Site: https://avivso.github.io/tlv-screenings/
+- Site: https://avivso.github.io/tlv-screenings/ — short link: https://tinyurl.com/tlvfilm
 - Refreshes itself every morning on GitHub Actions (`.github/workflows/refresh.yml`),
   commits `data/`, and deploys to Pages. Nothing runs on anyone's machine.
 
