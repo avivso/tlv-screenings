@@ -1,0 +1,39 @@
+name: Monthly programme reminder
+
+# Cinema Migdalor publishes its programme as one Instagram caption a month and
+# nowhere else. Rather than scrape Instagram, this opens an issue when the new
+# month's poster is due, so the only manual step is a paste — and only when
+# there is actually something to paste.
+on:
+  schedule:
+    - cron: "0 6 1 * *" # the 1st of each month, 09:00 Israel time
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Open the paste reminder
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          month=$(date -d "+2 days" +"%B %Y")
+          gh issue create \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Paste the $month programme for Cinema Migdalor" \
+            --body "$(cat <<'BODY'
+Cinema Migdalor posts its month of screenings as a single Instagram caption.
+
+1. Open https://www.instagram.com/migdalortlv/ and find the new `CINEMA MIGDALOR` post.
+2. Copy the caption.
+3. Replace the `paste` lines for `migdalor` in `data/manual-venues.json`, and set `source` to the new post's URL.
+
+Lines shaped like `15.9 | שלישי | 20:00 | שם הסרט` are read; everything else is ignored.
+The next refresh picks it up — ratings, posters and English titles all follow automatically.
+
+Every other venue on the site updates itself.
+BODY
+)"

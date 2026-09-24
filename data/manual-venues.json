@@ -21,16 +21,5 @@
       "29.9 | שלישי | 20:00 | סופרבאד"
     ],
     "screenings": []
-  },
-  "pisga": {
-    "name": "Cinema HaPisga",
-    "url": "https://www.oldjaffa.co.il/",
-    "year": 2026,
-    "source": "https://www.be106.net/255/159027",
-    "paste": [],
-    "screenings": [
-      { "date": "2026-09-29", "time": "17:00", "title": "מכוניות!" },
-      { "date": "2026-09-30", "time": "21:00", "title": "סנאצ׳" }
-    ]
   }
 }
