@@ -167,7 +167,7 @@
     <p class="later-sub" id="laterSub"></p>
     <ol class="list" id="later"></ol>
   </section>
-  <footer>Listings from the Tel Aviv Cinematheque, Movieland HaTzuk, Jaffa Cinema and the Atlas Rooftop Cinema, refreshed every morning. Movieland is a multiplex, so only its repertory screenings are listed — films at least 3 years old. IMDb scores come from IMDb's own ratings dataset, Rotten Tomatoes and Metacritic via OMDb, and films are identified with TMDB, which occasionally gets one wrong.</footer>
+  <footer>Listings from the Tel Aviv Cinematheque, Movieland HaTzuk, Jaffa Cinema, the Atlas Rooftop Cinema, Cinema Migdalor and Cinema HaPisga, refreshed every morning. Movieland is a multiplex, so only its repertory screenings are listed — films at least 3 years old. Scores come from IMDb's own ratings dataset; films are identified with TMDB, which occasionally gets one wrong.</footer>
 </main>
 
 <script>
@@ -210,7 +210,7 @@
 
   function tier(kind, v) {
     if (v == null) return "";
-    const [good, ok] = { imdb: [7.5, 6.5], rt: [75, 60], mc: [70, 50] }[kind];
+    const [good, ok] = { imdb: [7.5, 6.5] }[kind];
     return v >= good ? "good" : v >= ok ? "ok" : "low";
   }
 
@@ -301,16 +301,12 @@
         f.match === "fuzzy" ? el("span", { class: "tag", title: "The ratings match wasn't exact", text: "rating match unsure" }) : null),
     );
 
-    const hasScores = f.imdbRating != null || f.rottenTomatoes != null || f.metacritic != null;
-    const scores = hasScores
-      ? el("div", { class: "scores" },
-          scoreBox("IMDb", f.imdbRating, "", "imdb", imdbUrl),
-          scoreBox("Tomatometer", f.rottenTomatoes, "%", "rt"),
-          scoreBox("Metacritic", f.metacritic, "", "mc"))
-      // TMDB stands in when OMDb gave us nothing, so a film still shows a score.
+    // IMDb's score, or TMDB's when IMDb has none yet (usually a brand-new film).
+    const scores = f.imdbRating != null
+      ? el("div", { class: "scores" }, scoreBox("IMDb", f.imdbRating, "", "imdb", imdbUrl))
       : f.tmdbRating != null
         ? el("div", { class: "scores" }, scoreBox("TMDB", f.tmdbRating, "", "imdb", imdbUrl))
-        : el("div", { class: "unrated", text: "No ratings found" });
+        : el("div", { class: "unrated", text: "No rating yet" });
 
     const links = el("div", { class: "links" },
       s.ticketUrl ? el("a", { href: s.ticketUrl, target: "_blank", rel: "noopener", text: "Tickets" }) : null,
