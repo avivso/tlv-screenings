@@ -30,6 +30,9 @@ and the one page that needs parsing is handled by `cheerio`.
 | Cinematheque | `cinema.co.il/shown/?date=YYYY-MM-DD`, server-rendered, one fetch per day |
 | Movieland | `movieland.co.il/api/Events` with an empty `Date` returns the whole upcoming schedule in one call |
 | Jaffa | the home page links every upcoming `/calendar/<id>/`; each page's `<title>` carries date, time and film. The `/calendar/` index 404s — don't use it. The calendar sitemap is a backstop |
+| Rooftop Cinema (Atlas) | `atlas.co.il` is behind a hard Cloudflare block, but the rooftop page is only a shell around a `activity.hotelplus.io` ticketing widget, which serves plain HTML to anyone. Card titles read `<film> | D.M.YY | HH:MM` |
+| Cinema Migdalor | `data/manual-venues.json` — see below |
+| Cinema HaPisga | `data/manual-venues.json` — see below |
 
 ## Known limitation: Movieland cannot be refreshed from Actions
 
@@ -70,6 +73,29 @@ Movieland and Jaffa both publish further ahead than a week — Movieland's sched
 runs months out, and its classics are usually in those sparse later dates. Those
 screenings are collected too and shown under **Coming up later**, restricted to
 films at least 3 years old, since that is what is worth planning around.
+
+## Venues that only post to Instagram
+
+Cinema Migdalor (Migdalor Café, Reading Park) and Cinema HaPisga (Gan HaPisga,
+Old Jaffa) both run a **monthly** programme announced as a poster on Instagram or
+in a press release, with no feed, no ticketing system and no schedule page.
+Instagram hands captions to crawler user-agents and to logged-in browsers and to
+nothing else, so there is no honest way to read them from a scheduled job — this
+project is not going to impersonate Facebook's crawler once a day to get around it.
+
+They live in `data/manual-venues.json` instead, which is read like any other
+source. Adding a venue there is an edit to data, not to code. Each one takes
+either of:
+
+- `paste` — the post's caption copied verbatim. Lines shaped like
+  `1.9 | שלישי | 20:00 | היומן` (the day name is optional) are read, everything
+  else is ignored. `year` says which year those bare dates belong to.
+- `screenings` — explicit `{date, time, title}` entries, for programmes announced
+  as prose rather than a list.
+
+Once a month, paste the new caption over the old one. Everything downstream —
+ratings, posters, English titles, the day strip — then works exactly as it does
+for the scraped venues.
 
 ## Ratings
 

@@ -1,0 +1,36 @@
+{
+  "_readme": [
+    "Venues that publish their programme as a monthly poster on Instagram instead of a website.",
+    "Two ways to fill one in, and you can mix them:",
+    "  paste:      the post's caption, copied verbatim. Lines shaped like",
+    "              '1.9 | שלישי | 20:00 | היומן' or '1.9 | 20:00 | היומן' are read; everything else is ignored.",
+    "  screenings: explicit entries, for programmes announced as prose rather than a list.",
+    "'year' is the year the pasted dates belong to (they carry no year of their own)."
+  ],
+  "migdalor": {
+    "name": "Cinema Migdalor",
+    "url": "https://www.instagram.com/migdalortlv/",
+    "year": 2026,
+    "source": "https://www.instagram.com/migdalortlv/p/Dcf0qChkbv8/",
+    "paste": [
+      "🎬 CINEMA MIGDALOR | סרטי ספטמבר",
+      "1.9 | שלישי | 20:00 | היומן",
+      "8.9 | שלישי | 20:00 | נקודת פריצה",
+      "15.9 | שלישי | 20:00 | מהיר ועצבני 1",
+      "22.9 | שלישי | 20:00 | ילדות רעות",
+      "29.9 | שלישי | 20:00 | סופרבאד"
+    ],
+    "screenings": []
+  },
+  "pisga": {
+    "name": "Cinema HaPisga",
+    "url": "https://www.oldjaffa.co.il/",
+    "year": 2026,
+    "source": "https://www.be106.net/255/159027",
+    "paste": [],
+    "screenings": [
+      { "date": "2026-09-29", "time": "17:00", "title": "מכוניות!" },
+      { "date": "2026-09-30", "time": "21:00", "title": "סנאצ׳" }
+    ]
+  }
+}

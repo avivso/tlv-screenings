@@ -93,6 +93,9 @@
   .venue[data-v="cinematheque"] i { border-radius: 50%; }
   .venue[data-v="movieland"] i { transform: rotate(45deg) scale(.85); }
   .venue[data-v="jaffa"] i { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+  .venue[data-v="atlas"] i { border-radius: 2px; transform: scale(.9); box-shadow: inset 0 0 0 2px var(--paper); }
+  .venue[data-v="migdalor"] i { clip-path: polygon(50% 100%, 0 0, 100% 0); }
+  .venue[data-v="pisga"] i { clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); }
   .tag { margin-left: 6px; color: var(--muted); font-weight: 400; }
 
   .scores { display: flex; gap: 6px; justify-content: flex-end; }
@@ -164,7 +167,7 @@
     <p class="later-sub" id="laterSub"></p>
     <ol class="list" id="later"></ol>
   </section>
-  <footer>Listings from the Tel Aviv Cinematheque, Movieland HaTzuk and Jaffa Cinema, refreshed every morning. Movieland is a multiplex, so only its repertory screenings are listed — films at least 3 years old. IMDb scores come from IMDb's own ratings dataset, Rotten Tomatoes and Metacritic via OMDb, and films are identified with TMDB, which occasionally gets one wrong.</footer>
+  <footer>Listings from the Tel Aviv Cinematheque, Movieland HaTzuk, Jaffa Cinema and the Atlas Rooftop Cinema, refreshed every morning. Movieland is a multiplex, so only its repertory screenings are listed — films at least 3 years old. IMDb scores come from IMDb's own ratings dataset, Rotten Tomatoes and Metacritic via OMDb, and films are identified with TMDB, which occasionally gets one wrong.</footer>
 </main>
 
 <script>
@@ -294,6 +297,7 @@
       subParts.length ? el("p", { class: "sub", dir: "auto", text: subParts.join(", ") }) : null,
       el("div", { class: "venue", "data-v": s.venue }, el("i", { "aria-hidden": "true" }), data.venues[s.venue],
         s.stale ? el("span", { class: "tag", text: "from previous refresh" }) : null,
+        s.soldOut ? el("span", { class: "tag", text: "sold out" }) : null,
         f.match === "fuzzy" ? el("span", { class: "tag", title: "The ratings match wasn't exact", text: "rating match unsure" }) : null),
     );
 
