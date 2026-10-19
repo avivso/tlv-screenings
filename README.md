@@ -1,8 +1,8 @@
 # TLV Screenings
 
 The next 7 days of screenings at the **Tel Aviv Cinematheque**, **Movieland HaTzuk**,
-**Jaffa Cinema**, the **Atlas Rooftop Cinema**, **Cinema Migdalor** and **Cinema
-HaPisga**, with IMDb scores.
+**Lev Dizengoff**, **Jaffa Cinema**, the **Tel Aviv Museum of Art**, the **Atlas
+Rooftop Cinema**, **Cinema Migdalor** and **Cinema HaPisga**, with IMDb scores.
 
 - Site: https://avivso.github.io/tlv-screenings/ — short link: https://da.gd/tlv
 - Refreshes itself every morning on GitHub Actions (`.github/workflows/refresh.yml`),
@@ -34,6 +34,8 @@ and the one page that needs parsing is handled by `cheerio`.
 | Jaffa | the home page links every upcoming `/calendar/<id>/`; each page's `<title>` carries date, time and film. The `/calendar/` index 404s — don't use it. The calendar sitemap is a backstop |
 | Rooftop Cinema (Atlas) | `atlas.co.il` is behind a hard Cloudflare block, but the rooftop page is only a shell around a `activity.hotelplus.io` ticketing widget, which serves plain HTML to anyone. Card titles read `<film> | D.M.YY | HH:MM` |
 | Cinema Migdalor | `data/manual-venues.json` — see below |
+| Tel Aviv Museum of Art | `tamuseum.org.il/api/v2/he/events/filter/?category=film`, the JSON behind its film page: events grouped by day, titled `<i>Series</i> / <i>Film</i>, YEAR`, so the year comes free. Paged by `offset` |
+| Lev Dizengoff | `ticket.lev.co.il/api/presentations?locationId=1150`, the JSON behind its pres.global what's-on page, with English titles, running times and booking links. Held to films 3+ years old, like Movieland |
 | Cinema HaPisga | BE106's Tel Aviv RSS feed, which reports every screening the Old Jaffa Development Corporation announces; seen screenings are kept in `data/pisga-seen.json` |
 
 ## Movieland: through the ticketing API, not the website
