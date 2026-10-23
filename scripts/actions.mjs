@@ -38,4 +38,5 @@ for (const [venue, d] of Object.entries(debug.venues)) {
   console.log(`  ${venue}: ${d.count ?? 0}${d.error ? `  ERROR ${d.error.split("\n")[0]}` : ""}`);
 }
 if (listings.errors.length) console.log("\nProblems:", JSON.stringify(listings.errors, null, 2));
+if (debug.droppedAsTv?.length) console.log(`\nDropped as TV: ${debug.droppedAsTv.join(", ")}`);
 if (debug.unmatched.length) console.log(`\nNo rating match (${debug.unmatched.length}): ${debug.unmatched.join(", ")}`);
