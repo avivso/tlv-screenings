@@ -123,9 +123,6 @@
   .links a { text-underline-offset: 3px; }
   .unrated { color: var(--muted); font-size: 13px; text-align: right; }
 
-  .later-head { font: 700 clamp(34px, 7vw, 52px)/.9 var(--display); margin: 44px 0 0; }
-  .later-sub { color: var(--muted); font-size: 14px; margin: 6px 0 0; max-width: 60ch; }
-  .when { display: inline-block; font-size: 12px; font-weight: 600; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; margin-bottom: 3px; }
 
   .empty { padding: 48px 0; color: var(--muted); max-width: 60ch; }
   .empty strong { color: var(--ink); display: block; font-size: 18px; margin-bottom: 6px; }
@@ -172,11 +169,6 @@
   <ol class="list" id="list"></ol>
   <div id="empty"></div>
 
-  <section id="laterWrap" hidden>
-    <h2 class="later-head">Coming up later</h2>
-    <p class="later-sub" id="laterSub"></p>
-    <ol class="list" id="later"></ol>
-  </section>
   <footer>Listings from the Tel Aviv Cinematheque, Movieland HaTzuk, Lev Dizengoff, Jaffa Cinema, the Tel Aviv Museum of Art, the Atlas Rooftop Cinema, Cinema Migdalor and Cinema HaPisga, refreshed every morning. Movieland and Lev mostly show new releases, so only their films at least 3 years old are listed. Scores come from IMDb's own ratings dataset; films are identified with TMDB, which occasionally gets one wrong.</footer>
 </main>
 
@@ -330,28 +322,6 @@
       el("div", { class: "time", text: s.time }), film, scores, links);
   }
 
-  const LONG_DAY = { weekday: "short", day: "numeric", month: "short", timeZone: "UTC" };
-
-  /** Screenings past the 7-day strip. Only older films get this far (see MIN_AGE). */
-  function renderLater() {
-    const { data } = state;
-    const wrap = $("laterWrap");
-    const items = (data.upcoming || []).filter((s) => state.venues.has(s.venue));
-    wrap.hidden = !items.length;
-    if (!items.length) return;
-
-    $("laterSub").textContent =
-      `Films at least ${data.minAge ?? 3} years old, screening after this week.`;
-    const box = $("later");
-    box.replaceChildren();
-    let lastDate = null;
-    for (const s of items) {
-      const when = s.date === lastDate ? null : new Date(s.date + "T12:00:00Z").toLocaleDateString("en-GB", LONG_DAY);
-      lastDate = s.date;
-      box.append(row(s, data.films[s.filmKey] || {}, { when }));
-    }
-  }
-
   function renderList(animate) {
     const { data } = state;
     const now = nowIL();
@@ -375,8 +345,6 @@
     list.classList.toggle("enter", !!animate);
     list.replaceChildren();
     for (const { s, f } of rows) list.append(row(s, f, { past: isToday && minutes(s.time) < minutes(now.time) }));
-
-    renderLater();
 
     const empty = $("empty");
     empty.replaceChildren();
