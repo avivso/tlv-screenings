@@ -84,6 +84,14 @@
   }
   .time { font: 700 52px/.8 var(--display); color: var(--stamp); padding-top: 4px; font-variant-numeric: tabular-nums; }
   .row.past .time { color: var(--muted); }
+  .film { display: flex; gap: 14px; align-items: flex-start; min-width: 0; }
+  .film-text { min-width: 0; flex: 1; }
+  .poster {
+    flex: 0 0 auto; width: 64px; aspect-ratio: 2 / 3; object-fit: cover;
+    border-radius: 4px; background: var(--rule); box-shadow: 0 1px 3px rgb(0 0 0 / .18);
+  }
+  .poster.blank { box-shadow: none; }
+  @media (max-width: 600px) { .poster { width: 48px; } }
   .title { font-size: 19px; font-weight: 600; line-height: 1.25; margin: 0; overflow-wrap: anywhere; }
   .title a { text-decoration: none; }
   .title a:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -293,7 +301,9 @@
     const subParts = [f.titleEn && f.titleEn !== s.title ? f.titleEn : null, year, s.runtime ? `${s.runtime} min` : null].filter(Boolean);
     const imdbUrl = f.imdbId ? `https://www.imdb.com/title/${f.imdbId}/` : null;
 
-    const film = el("div", {},
+    const film = el("div", { class: "film" },
+      f.poster ? el("img", { class: "poster", src: f.poster, alt: "", loading: "lazy", decoding: "async", referrerpolicy: "no-referrer" }) : el("div", { class: "poster blank", "aria-hidden": "true" }),
+      el("div", { class: "film-text" },
       when ? el("span", { class: "when", text: when }) : null,
       el("h2", { class: "title", dir: "auto" }, el("a", { href: s.infoUrl || s.ticketUrl, target: "_blank", rel: "noopener", text: s.title })),
       subParts.length ? el("p", { class: "sub", dir: "auto", text: subParts.join(", ") }) : null,
@@ -301,6 +311,7 @@
         s.stale ? el("span", { class: "tag", text: "from previous refresh" }) : null,
         s.soldOut ? el("span", { class: "tag", text: "sold out" }) : null,
         f.match === "fuzzy" ? el("span", { class: "tag", title: "The ratings match wasn't exact", text: "rating match unsure" }) : null),
+      ),
     );
 
     // IMDb's score, or TMDB's when IMDb has none yet (usually a brand-new film).
